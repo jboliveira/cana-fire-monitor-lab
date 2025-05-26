@@ -1,4 +1,4 @@
-package br.com.app.canafire.web;
+package br.com.app.canafire.ingestion;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 @RestController
-@RequestMapping("/api/csv")
-public class CsvDownloadController {
+@RequestMapping("/api")
+public class HotspotDownloader {
 
     private static final String BASE_URL = "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/10min/";
 
@@ -31,11 +31,4 @@ public class CsvDownloadController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @GetMapping
-    public String teste() {
-        return "Spring Boot está funcionando!";
-    }
-
-
 }

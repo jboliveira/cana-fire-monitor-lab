@@ -1,4 +1,4 @@
-package br.com.app.canafire.domain;
+package br.com.app.canafire;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
