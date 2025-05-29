@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 public class Hotspot {
     private double lat;
     private double lon;
-    private String satelite;
-    private String data;
+    private String sat;
+    private String date;
 
 
-    public Hotspot(double lat, double lon, String satelite, String data) {
+    public Hotspot(double lat, double lon, String sat, String date) {
         this.lat = lat;
         this.lon = lon;
-        this.satelite = satelite;
-        this.data = data;
+        this.sat = sat;
+        this.date = date;
     }
 }

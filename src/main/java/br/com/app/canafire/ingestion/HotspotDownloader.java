@@ -19,7 +19,7 @@ public class HotspotDownloader {
     private static final String CSV_URL =
             "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/10min/focos_10min_20250526_0000.csv";
 
-    @Scheduled(fixedDelayString = "${app.pull-interval}")
+    @Scheduled(fixedDelayString = "${app.pull-interval}") // Insert interval application.properties
     public void pullLatestCsv() {
         System.out.println("Starting CSV download...");
         webClient.get()
@@ -27,11 +27,11 @@ public class HotspotDownloader {
                 .retrieve()
                 .bodyToMono(String.class)
                 .flatMapMany(HotspotParser::parse)
-                .doOnError(e -> System.err.println("Download/parsing error: " + e.getMessage()))
+                .doOnError(e -> System.err.println("Download error: " + e.getMessage()))
                 .subscribe(
                         hotspotService::handle,
-                        err -> { /* tratamento adicional */ },
-                        () -> System.out.println("CSV processing completed.")
+                        err -> { /* exceptions */ },
+                        () -> System.out.println("CSV completed.")
                 );
     }
 }
