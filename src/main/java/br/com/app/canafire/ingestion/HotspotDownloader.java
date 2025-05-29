@@ -1,12 +1,13 @@
 package br.com.app.canafire.ingestion;
 
-
+import br.com.app.canafire.service.HotspotService;
 import br.com.app.canafire.parser.HotspotParser;
 import br.com.app.canafire.service.HotspotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
 
 @Component
 @RequiredArgsConstructor
@@ -27,12 +28,10 @@ public class HotspotDownloader {
                 .bodyToMono(String.class)
                 .flatMapMany(HotspotParser::parse)
                 .doOnError(e -> System.err.println("Download/parsing error: " + e.getMessage()))
-                .subscribe(hotspotService::handle,
-                        err -> {/*tratamento adicional*/},
-                        () -> System.out.println("CSV processing completed."));
+                .subscribe(
+                        hotspotService::handle,
+                        err -> { /* tratamento adicional */ },
+                        () -> System.out.println("CSV processing completed.")
+                );
     }
-}
-
-
-
 }
