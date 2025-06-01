@@ -21,9 +21,6 @@ public class HotspotDownloader {
     @Value("${app.base-url}")
     private String baseUrl;
 
-    private static final String CSV_URL =
-            "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/10min/focos_10min_20250529_0000.csv";
-
     @Scheduled(fixedDelayString = "${app.pull-interval}")
     public void pullLatestCsv() {
         System.out.println("Start...");
