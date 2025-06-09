@@ -1,15 +1,14 @@
 package br.com.app.canafire.ingestion;
 
 import br.com.app.canafire.exception.GlobalWebClientErrorHandler;
-import br.com.app.canafire.exception.HotspotDownloadException;
 import br.com.app.canafire.parser.HotspotParser;
 import br.com.app.canafire.service.HotspotService;
+import br.com.app.canafire.util.HotspotUrlGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import org.springframework.beans.factory.annotation.Value;
 
 @Component
 @RequiredArgsConstructor
@@ -24,12 +23,16 @@ public class HotspotDownloader {
     @Scheduled(fixedDelayString = "${app.pull-interval}")
     public void pullLatestCsv() {
         System.out.println("Start...");
+
+        String dynamicURL = HotspotUrlGenerator.generateLatestUrl(baseUrl); // metodoLastUrl(baseURL)
+        System.out.println("URL: " + dynamicURL);
+
         webClient.get()
-                .uri(baseUrl)
+                .uri(dynamicURL)
                 .retrieve()
                 .onStatus(
                         status -> status.is4xxClientError() || status.is5xxServerError(),
-                        GlobalWebClientErrorHandler::handleResponse //
+                        GlobalWebClientErrorHandler::handleResponse
                 )
                 .bodyToMono(String.class)
                 .flatMapMany(HotspotParser::parse)
@@ -45,5 +48,4 @@ public class HotspotDownloader {
                         () -> System.out.println("Completed.")
                 );
     }
-
 }
